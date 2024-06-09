@@ -1,0 +1,9 @@
+.dashboard-container {
+  display: grid;
+  grid-template-columns: max-content auto;
+  height: 100vh;
+  .chart-container {
+    margin: auto;
+    width: 90%;
+  }
+}
