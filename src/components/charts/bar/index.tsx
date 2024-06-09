@@ -6,7 +6,13 @@ if (typeof Highcharts === "object") {
   HighchartsExporting(Highcharts);
 }
 
-const BarChart = (props: { data: any; category: string }) => {
+const BarChart = (props: {
+  data: {
+    name: string;
+    y: number;
+  }[];
+  category: string;
+}) => {
   const { data, category } = props;
   const chartOptions: Options = {
     chart: {

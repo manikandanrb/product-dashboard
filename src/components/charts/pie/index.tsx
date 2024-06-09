@@ -6,7 +6,12 @@ if (typeof Highcharts === "object") {
   HighchartsExporting(Highcharts);
 }
 
-const PieChart = (props: { data: any }) => {
+const PieChart = (props: {
+  data: {
+    name: string;
+    y: number;
+  }[];
+}) => {
   const { data } = props;
 
   const chartOptions: Options = {

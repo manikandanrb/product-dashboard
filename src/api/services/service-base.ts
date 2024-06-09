@@ -1,5 +1,5 @@
-import { AxiosHeaders, AxiosInstance, AxiosResponse } from 'axios';
-import { serviceError } from './service-error';
+import { AxiosHeaders, AxiosInstance, AxiosResponse } from "axios";
+import { serviceError } from "./service-error";
 
 interface IHttpCallback {
   (response: AxiosResponse): void;
@@ -45,8 +45,13 @@ export class ServiceBase {
     }
   ): Promise<T> {
     try {
-      const reqHeaders = { 'content-type': 'application/json', ...config?.headers };
-      const response = await this._axios.post(url, body, { headers: reqHeaders });
+      const reqHeaders = {
+        "content-type": "application/json",
+        ...config?.headers,
+      };
+      const response = await this._axios.post(url, body, {
+        headers: reqHeaders,
+      });
       if (config?.cb) {
         config?.cb(response);
       }
@@ -65,8 +70,13 @@ export class ServiceBase {
     }
   ): Promise<T> {
     try {
-      const reqHeaders = { 'content-type': 'application/json', ...config?.headers };
-      const response = await this._axios.put(url, body, { headers: reqHeaders });
+      const reqHeaders = {
+        "content-type": "application/json",
+        ...config?.headers,
+      };
+      const response = await this._axios.put(url, body, {
+        headers: reqHeaders,
+      });
       if (config?.cb) {
         config?.cb(response);
       }
@@ -85,8 +95,13 @@ export class ServiceBase {
     }
   ): Promise<T> {
     try {
-      const reqHeaders = { 'content-type': 'application/json', ...config?.headers };
-      const response = await this._axios.patch(url, body, { headers: reqHeaders });
+      const reqHeaders = {
+        "content-type": "application/json",
+        ...config?.headers,
+      };
+      const response = await this._axios.patch(url, body, {
+        headers: reqHeaders,
+      });
       if (config?.cb) {
         config?.cb(response);
       }
@@ -105,8 +120,14 @@ export class ServiceBase {
     }
   ): Promise<T> {
     try {
-      const reqHeaders = { 'content-type': 'application/json', ...config?.headers };
-      const response = await this._axios.delete(url, { headers: reqHeaders, params: config?.params });
+      const reqHeaders = {
+        "content-type": "application/json",
+        ...config?.headers,
+      };
+      const response = await this._axios.delete(url, {
+        headers: reqHeaders,
+        params: config?.params,
+      });
       if (config?.cb) {
         config?.cb(response);
       }

@@ -5,6 +5,7 @@ import { useProduct } from "@/hooks/useProduct";
 import { useProductById } from "@/hooks/useProductById";
 import { useDashboardStore } from "@/store";
 import { Box, CircularProgress } from "@mui/material";
+import { useMemo } from "react";
 import DashboardFilter from "../../components/dashboard-filter";
 import styles from "./index.module.scss";
 
@@ -17,18 +18,25 @@ const Dashboard = () => {
     runReport,
     isLoading,
   } = useDashboardStore();
-
-  const { products } = useProduct(selectedCategory, showBarChart, runReport);
-
+  const { products } = useProduct(
+    selectedCategory,
+    showBarChart,
+    runReport,
+    selectedProducts
+  );
   const { products: selectedProductData } = useProductById(selectedProducts);
 
   const productItems =
     selectedProducts?.length > 0 ? selectedProductData : products ?? [];
 
-  const productData = productItems?.map((product) => ({
-    name: product.title,
-    y: product.price,
-  }));
+  const productData = useMemo(
+    () =>
+      productItems?.map((product) => ({
+        name: product.title,
+        y: product.price,
+      })),
+    [productItems]
+  );
 
   return (
     <div className={styles.dashboardContainer}>
@@ -45,14 +53,10 @@ const Dashboard = () => {
           >
             <CircularProgress />
           </Box>
+        ) : showBarChart && productData ? (
+          <BarChart data={productData} category={selectedCategory} />
         ) : (
-          <>
-            {showBarChart && productData ? (
-              <BarChart data={productData} category={selectedCategory} />
-            ) : (
-              <PieChart data={pieChartData} />
-            )}
-          </>
+          <PieChart data={pieChartData} />
         )}
       </div>
     </div>
