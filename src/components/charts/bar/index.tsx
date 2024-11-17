@@ -76,11 +76,7 @@ const BarChart = (props: {
       },
     ],
   };
-  return (
-    <div>
-      <HighchartsReact highcharts={Highcharts} options={chartOptions} />
-    </div>
-  );
+  return <HighchartsReact highcharts={Highcharts} options={chartOptions} />;
 };
 
 export { BarChart };

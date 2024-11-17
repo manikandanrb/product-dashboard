@@ -1,5 +1,7 @@
+import { api } from "@/api";
+import { Product } from "@/api/services/dashboard";
 import { useQuery } from "@tanstack/react-query";
-import { api } from "../api";
+import { useEffect, useState } from "react";
 
 const useProduct = (
   selectedCategory: string,
@@ -7,23 +9,42 @@ const useProduct = (
   runReport: boolean = false,
   selectedProducts: string[] = []
 ) => {
-  const getProducts = async () => {
+  const [productsById, setProductsById] = useState<Product[]>([]);
+
+  const getProductsByCategory = async () => {
     return await api().getProductsByCategory(selectedCategory);
   };
 
-  const { data: products } = useQuery({
-    queryKey: ["products-by-category", selectedCategory],
-    queryFn: getProducts,
-    enabled:
-      !!selectedCategory &&
-      showBarChart &&
-      runReport &&
-      selectedProducts?.length == 0,
-    refetchOnWindowFocus: false,
-  });
+  const getProductsById = async (productIds: string[]) => {
+    const productPromises = productIds.map(async (productId) => {
+      return await api().getProductById(productId);
+    });
+    return await Promise.all(productPromises);
+  };
+
+  const { data: categoryProducts, refetch: refetchCategoryProducts } = useQuery(
+    {
+      queryKey: ["products-by-category", selectedCategory],
+      queryFn: getProductsByCategory,
+      enabled:
+        !!selectedCategory &&
+        showBarChart &&
+        runReport &&
+        selectedProducts?.length === 0,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  useEffect(() => {
+    if (selectedProducts?.length > 0) {
+      getProductsById(selectedProducts).then(setProductsById);
+    }
+  }, [selectedProducts]);
 
   return {
-    products,
+    products:
+      selectedProducts.length > 0 ? productsById : categoryProducts ?? [],
+    refetchCategoryProducts,
   };
 };
 
